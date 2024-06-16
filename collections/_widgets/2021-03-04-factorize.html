@@ -1,0 +1,25 @@
+---
+layout: widget-base2
+---
+<p>Finds factors and prime factors of numbers (must be a positive integer).</p>
+<label for="factorize-in">Input:</label>
+<input type="number" id="factorize-in" onchange="factorize()">
+<p id="time"></p><br>
+<p>Number of prime factors:</p>
+<p id="factorize-out1"></p>
+<p>Prime factorization:</p>
+<p id="factorize-out2"></p>
+<p>Number of distinct prime factors:</p>
+<p id="factorize-out3"></p>
+<p>Prime factorization (exponential):</p>
+<p id="factorize-out4"></p>
+<p>Number of factors:</p>
+<p id="factorize-out5"></p>
+<p>All factors:</p>
+<p id="factorize-out6"></p>
+<h2>Technical Comment</h2>
+<p>This program finds factors using Pollard's rho algorithm.
+	It has a time complexity of O(n<sup>(1/4)</sup>), which is faster than the standard method of trial division.
+	In practice, this program can factor all numbers up to 10<sup>24</sup> in a second.</p>
+
+<script src={{"/assets/widgets.js" | relative_url}}></script>

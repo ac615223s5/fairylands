@@ -1,0 +1,7 @@
+- name: Home 
+  link: /
+- name: Widgets 
+  link: widgets
+- name: Imagedump 
+  link: images
+- name: portal

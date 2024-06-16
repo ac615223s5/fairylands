@@ -1,0 +1,11 @@
+---
+layout: widget-base
+title: Fairylands
+---
+<h1 class="m-1">Fairylands Museum</h1>
+<p class="m-1">A collection of miscellaneous programs.</p>
+<ul class="widgets">
+	{%- for widget in site.widgets reversed -%}
+		<li class="p-4 bg-[#fef8ff] dark:bg-transparent"><a href="{{widget.url | relative_url}}" class="underline text-xl text-[slategrey] dark:text-amber-500">{{widget.title}}</a></li>
+	{%- endfor -%}
+</ul>

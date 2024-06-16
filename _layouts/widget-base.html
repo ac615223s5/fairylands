@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	{%include head.html%}
+	<body class="font-opensans dark:text-rose-400 dark:bg-[url(../../assets/images/purplerosesblkbg.gif)]">
+		<div class="flex flex-col min-h-screen">
+			<header class="flex justify-between bg-black shadow-[0_-9px_10px_6px_#bf49ff]">
+				<h1 class="inline ml-10 text-5xl text-white hover:text-brightpurple"><a class="font-forte" href={{"/" | relative_url}}>Fairylands</a></h1>
+				<a href=".."><img class="h-14" src={{"/assets/images/favicon.ico" | relative_url}} alt="logo"></a>
+			</header>
+			<div class="widgets grow mx-auto w-full md:w-2/3 pt-5 p-2 dark:bg-purple-950/80">
+				{{content}}
+			</div>
+			{%include footer.html%}
+		</div>
+	</body>
+</html>

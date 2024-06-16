@@ -1,0 +1,164 @@
+---
+layout: default
+title: Fairylands
+exhibits:
+  - name: "Fireworks"
+    description: An interactive fireworks show that syncs up with music 
+    links: "https://github.com/ac615223s5/fireworks"
+    thumbnail: "/assets/images/gallery-thumbnails/fireworks.jpg"
+  - name: "WebGL Fluid Simulation"
+    description: Play with fluids (audio responsive) 
+    links: "https://github.com/ac615223s5/WebGL-Fluid-Simulation"
+    thumbnail: "/assets/images/gallery-thumbnails/fluids.jpg"
+  - name: "Lines"
+    description: "Abstract art"
+    links: "/widgets/2021-04-13-line-art.html" 
+    thumbnail: "/assets/images/gallery-thumbnails/line-art.png"
+  - name: "Half plane intersection"
+    description: "Abstract art"
+    links: "https://ac615223s5.github.io/birdhome/2021/04/12/abstract-art.html" 
+    thumbnail: "/assets/images/gallery-thumbnails/halfplane.png"
+  - name: "Main Exhibit"
+    description: ""
+    links: "/widgets"
+    thumbnail: "/assets/images/gallery-thumbnails/test.png"
+  - name: "Sorting"
+    description: "Sorting algorithm visualization"
+    links: "https://ac615223s5.github.io/sorting-algorithm-visualization/"
+    thumbnail: "/assets/images/gallery-thumbnails/sorting.png"
+  - name: "Maze Simulator"
+    description: "Graph traversal demonstration with mazes"
+    links: "https://ac615223s5.github.io/maze-simulator/"
+    thumbnail: "/assets/images/gallery-thumbnails/maze.png"
+  - name: "Speedforces"
+    description: "Typing game"
+    links: "https://ac615223s5.github.io/speedforces"
+    thumbnail: "/assets/images/gallery-thumbnails/speedforces.png"
+  - name: "Solar System"
+    description: "My first website"
+    links: "https://ac615223s5.github.io/SolarSystem/"
+    thumbnail: "/assets/images/d2q6q8t-335c3992-9f28-410c-a9c3-ffad5c6faacf.jpg"
+---
+<div>
+  <div class="landing-carousel relative">
+    <div x-data="xdata" x-init="startAutoSlide()" @mouseover="stopAutoSlide()" @mouseout="startAutoSlide()" class="flex flex-col w-full">
+      <div tabindex="0" role="region" aria-labelledby="carousel-label" class="z-10 flex space-x-6">
+          <h2 id="carousel-label" class="sr-only" hidden>Carousel</h2>
+          <span id="carousel-content-label" class="sr-only" hidden>Carousel</span>
+          <ul x-ref="slider" tabindex="0" role="listbox" aria-labelledby="carousel-content-label" class="flex w-screen overflow-x-hidden">
+              <template x-for="slide in slides">
+                <li class="flex flex-col items-center justify-center p-0 shrink-0" role="option">
+                    <div class="w-screen h-screen flex items-center justify-center bg-cover" x-bind:style="'background-image:url('+slide.img+'); color:'+slide.color">
+                      <div class="font-opensans">
+                        <h2>Online Museum</h2>
+                        <h1 class="font-bold text-8xl">Fairylands</h1>
+                      </div>
+                    </div>
+                </li>
+              </template>
+          </ul>
+      </div>
+      <!-- Prev / Next Buttons -->
+      <div class="absolute flex justify-between w-full h-full px-4">
+          <!-- Prev Button -->
+          <button x-on:click="prev" class="z-20 text-6xl" :aria-disabled="atBeginning" :tabindex="atEnd ? -1 : 0">
+              <span aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-auto h-5 text-gray-300 lg:h-8 hover:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                  </svg>
+              </span>
+              <span class="sr-only">Skip to previous slide page</span>
+          </button>
+          <!-- Next Button -->
+          <button x-on:click="next" class="z-20 text-6xl" :aria-disabled="atEnd" :tabindex="atEnd ? -1 : 0">
+              <span aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-auto h-5 text-gray-300 lg:h-8 hover:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+              </span>
+              <span class="sr-only">Skip to next slide page</span>
+          </button>
+      </div>
+      <!-- Indicators -->
+      <div class=" absolute w-full bottom-12 lg:bottom-24">
+          <div class="z-20 flex justify-center space-x-2">
+              <template x-for="(slide, index) in slides" :key="index">
+                  <button @click="goToSlide(index)" :class="{'bg-gray-500': currentSlide === index, 'bg-gray-300': currentSlide !== index}" class="w-3 h-1 rounded-full lg:w-5 hover:bg-gray-400 focus:outline-none focus:bg-gray-400"></button>
+              </template>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="md:w-3/5 m-auto md:py-24 dark:text-[mintcream]">
+    <h1 class="my-7 text-center text-5xl font-black font-arial">Gallery</h1>
+    <div class="grid grid-cols-3 md:gap-5">
+      {% for item in page.exhibits %}
+        <div class="">
+          <img src="{{item.thumbnail | relative_url}}" class="object-cover aspect-[2/1] w-full shadow-[0_0_5px_0_darkslategrey]">
+          <div class="">
+            <div>
+              <h2 class="inline font-bold text-lg">{{item.name}}</h2>
+              <a href="{{item.links | relative_url}}">
+                <span class="text-sm p-1 dark:border border-white dark:hover:bg-[mintcream] dark:hover:shadow-[0_0_9px_2px_mintcream] dark:hover:text-black">Enter</span>
+              </a>
+            </div>
+            <p class="text-sm  font-poppins">{{item.description}}</p>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<script>
+  const navbar = document.querySelector('.nav');
+    navbar.classList.remove('nav-scroll');
+  window.onscroll = () => {
+    if (window.scrollY > 500) {
+      navbar.classList.add('nav-scroll');
+    } else {
+      navbar.classList.remove('nav-scroll');
+    }
+  };
+  xdata=()=>{return {
+      slides:[
+        {scroll:false,color:"black",img:"{{"/assets/images/d2q6q8t-335c3992-9f28-410c-a9c3-ffad5c6faacf.jpg" | relative_url}}"},
+        {scroll:false,color:"white",img:"{{"/assets/images/gallery-thumbnails/fireworks.jpg" | relative_url}}"},
+        {scroll:false,color:"black",img:"{{"/assets/images/gallery-thumbnails/fluids.jpg" | relative_url}}"},
+        {scroll:true,color:"black",img:"{{"/assets/images/gallery-thumbnails/line-art.png" | relative_url}}"},
+        {scroll:true,color:"black",img:"{{"/assets/images/gallery-thumbnails/test.png" | relative_url}}"},
+        {scroll:true,color:"black",img:"{{"/assets/images/imgComing.jpg" | relative_url}}"},
+      ],
+      currentSlide: 0,
+      atBeginning: false,
+      atEnd: false,
+      autoSlideInterval: null,
+      startAutoSlide() {
+        this.goToSlide(this.currentSlide);
+        this.autoSlideInterval = setInterval(() => {
+            this.next();
+        }, 4000);
+      },
+      stopAutoSlide() {
+          clearInterval(this.autoSlideInterval);
+      },
+      prev(){
+        this.goToSlide((this.currentSlide+this.slides.length-1)%this.slides.length);
+      },
+      next(){
+        this.goToSlide((this.currentSlide+1)%this.slides.length);
+      },
+      goToSlide(index) {
+          let slider = this.$refs.slider;
+          let offset = slider.lastElementChild.getBoundingClientRect().width;
+          slider.scrollTo({ left: offset * index, behavior: 'smooth' });
+          this.currentSlide=index;
+          if(this.slides[index].scroll){
+            navbar.classList.add('nav-scroll');
+          }
+          else if(window.scrollY<500){
+            navbar.classList.remove('nav-scroll');
+          }
+      },
+  }};
+</script>

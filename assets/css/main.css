@@ -1,0 +1,64 @@
+---
+---
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@layer base{
+  @font-face {
+    font-family: "open sans";
+    src: url(../../assets/font/OpenSans-Regular.ttf);
+  }
+  @font-face {
+    font-family: "open sans light";
+    src: url(../../assets/font/OpenSans-Light.ttf);
+  }
+  @font-face {
+    font-family: "poppins";
+    src: url(../../assets/font/Poppins-Regular.ttf);
+  }
+  @font-face {
+    font-family: "forte";
+    src: url(../../assets/font/FORTE.TTF);
+  }
+  h1{
+    @apply text-4xl;
+  }
+  h2{
+    @apply text-2xl;
+  }
+  .widgets{
+    textarea{
+      @apply w-full;
+      @apply h-40;
+    }
+    input,textarea,select{
+      @apply dark:bg-black;
+    }
+    input{
+      @apply border-b border-neutral-300 dark:border-amber-500;
+    }
+    input.largeInput{
+      @apply w-4/5;
+      @apply block;
+    }
+    input.smallInput{
+      @apply w-12;
+      -moz-appearance: textfield;
+    }
+    
+    canvas{
+      @apply border dark:border-black;
+    }
+    button{
+      @apply border-4 border-double rounded dark:border-black;
+      @apply dark:bg-[url(../../assets/images/10042.png)];
+      @apply px-1;
+    }
+    li+li{
+      @apply border-t border-[#fbdfff];
+      @apply dark:border-rose-500;
+    }
+
+  }
+}

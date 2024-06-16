@@ -1,0 +1,54 @@
+---
+---
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<title>Submillisecond Button Press Challenge</title>
+		<link rel="icon" href="/assets/images/logo.png" type="image/icon">
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+	<body onmousedown="ev()" onmouseup="ev()" onkeydown="ev()" onkeyup="ev()" onwheel="ev()" oncontextmenu="return false;">
+		<a href="./">Back</a>
+		<h1>Submillisecond Button Press Challenge</h1>
+		<p>Goal: press 2 buttons within 1ms.</p>
+		<p>Note: this challenge is kinda scuffed due to input lag</p>
+		<div id="interval" style="height:400px; overflow:scroll; background-color:lightgrey;"></div>
+		<p id="count1"></p>
+		<p id="count2"></p>
+		A game where you try to press two buttons at the same time. The number of milliseconds between your last inputs will be shown on the display. Try to get it below one.
+		<details>
+			<summary>Spoiler</summary>
+			There are two approaches: spam as many inputs as you can and maximize your inputs/second (eg. mashing the keyboard), or try to time two inputs to occur at precisely the same time (eg. right and left clicking with the same finger).
+			Timing can only take you so far because there is always some random input delay of 1-30ms, depending on the quality of your peripherals. You can combine the two approaches and try to press as many buttons as possible within these few milliseconds and hope two of them are particularly close together.
+			
+			
+		</details>
+	<script>
+		var time=window.performance.now();
+		var cnt=0,last1=0,last2=0,last=[];
+
+		function ev(){
+			var now=window.performance.now(),dif=now-time;
+			if(dif>500) document.getElementById("interval").innerHTML="";
+			if(dif>1){
+				dif=Math.round(dif);
+				document.getElementById("interval").innerHTML=dif+"<br>"+document.getElementsByTagName("div")[0].innerHTML;
+			}
+			else if(dif>0.1){
+				document.getElementById("interval").innerHTML="<span style=\"background-color:gold;\">"+dif+"</span><br>"+document.getElementsByTagName("div")[0].innerHTML;
+			}
+			else{
+				document.getElementById("interval").innerHTML="<div style=\"background-color:black; color:gold;\">"+dif+"</div>"+document.getElementsByTagName("div")[0].innerHTML;	
+			}
+			last[cnt++]=now;
+			while(last[last1]<now-5000) last1++;
+			while(last[last2]<now-60000) last2++;
+			document.getElementById("count1").innerHTML="5 second average: "+(cnt-last1)/5+"/s";
+			document.getElementById("count2").innerHTML="60 second average: "+(cnt-last2)/60+"/s";
+			time=now;
+		}
+	</script>
+	</body>
+</html>
