@@ -40,7 +40,7 @@ exhibits:
     thumbnail: "/assets/images/d2q6q8t-335c3992-9f28-410c-a9c3-ffad5c6faacf.jpg"
 ---
 <div>
-  <div class="landing-carousel relative">
+  <div class="landing-carousel relative bg-[url(/assets/images/34601401_p0.jpg)] bg-cover bg-fixed">
     <div x-data="xdata" x-init="startAutoSlide()" @mouseover="stopAutoSlide()" @mouseout="startAutoSlide()" class="flex flex-col w-full">
       <div tabindex="0" role="region" aria-labelledby="carousel-label" class="z-10 flex space-x-6">
           <h2 id="carousel-label" class="sr-only" hidden>Carousel</h2>
@@ -80,8 +80,8 @@ exhibits:
           </button>
       </div>
       <!-- Indicators -->
-      <div class=" absolute w-full bottom-12 lg:bottom-24">
-          <div class="z-20 flex justify-center space-x-2">
+      <div class="z-20 absolute w-full bottom-12 lg:bottom-24">
+          <div class="flex justify-center space-x-2">
               <template x-for="(slide, index) in slides" :key="index">
                   <button @click="goToSlide(index)" :class="{'bg-gray-500': currentSlide === index, 'bg-gray-300': currentSlide !== index}" class="w-3 h-1 rounded-full lg:w-5 hover:bg-gray-400 focus:outline-none focus:bg-gray-400"></button>
               </template>
@@ -109,7 +109,7 @@ exhibits:
       {% endfor %}
     </div>
   </div>
-</div>
+</div> 
 <script>
   const navbar = document.querySelector('.nav');
     navbar.classList.remove('nav-scroll');
@@ -122,11 +122,11 @@ exhibits:
   };
   xdata=()=>{return {
       slides:[
+      {scroll:false,color:"white",img:""},
         {scroll:false,color:"black",img:"{{"/assets/images/d2q6q8t-335c3992-9f28-410c-a9c3-ffad5c6faacf.jpg" | relative_url}}"},
         {scroll:false,color:"white",img:"{{"/assets/images/gallery-thumbnails/fireworks.jpg" | relative_url}}"},
         {scroll:false,color:"black",img:"{{"/assets/images/gallery-thumbnails/fluids.jpg" | relative_url}}"},
         {scroll:true,color:"black",img:"{{"/assets/images/gallery-thumbnails/line-art.png" | relative_url}}"},
-        {scroll:true,color:"black",img:"{{"/assets/images/gallery-thumbnails/test.png" | relative_url}}"},
         {scroll:true,color:"black",img:"{{"/assets/images/imgComing.jpg" | relative_url}}"},
       ],
       currentSlide: 0,
