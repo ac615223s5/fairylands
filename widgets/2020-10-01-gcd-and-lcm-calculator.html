@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+  <title>Gcd And Lcm Calculator</title>
+  <base href="" />
+  <link rel="icon" href=/assets/images/favicon.ico type="image/icon">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="//unpkg.com/alpinejs" defer></script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  <link rel="stylesheet" href=/assets/css/main.css type="text/css">
+</head>
+	<body class="font-opensans dark:text-rose-400 dark:bg-[url(../../assets/images/purplerosesblkbg.gif)]">
+		<div class="flex flex-col min-h-screen">
+			<header class="flex justify-between bg-black shadow-[0_-9px_10px_6px_#bf49ff]">
+				<h1 class="inline ml-10 text-5xl text-white hover:text-brightpurple"><a class="font-forte" href=/>Fairylands</a></h1>
+				<a href=".."><img class="h-14" src=/assets/images/favicon.ico alt="logo"></a>
+			</header>
+			<div class="widgets grow mx-auto w-full md:w-2/3 pt-5 p-2 dark:bg-purple-950/80">
+				<a href=/widgets class="text-fuchsia-600 dark:text-amber-500 underline">Back</a>
+<h1>Gcd And Lcm Calculator</h1>
+<p>A simple tool to calculate the gcd (greatest common divisor) and lcm (least common multiple) of a list of numbers. It uses Euclid’s algorithm so it runs quickly (O(log(n)) time complexity) without needing to check every factor.</p>
+
+<p><input type="text" id="next-prime-in" onchange="findGCD()" /></p>
+<p>GCD:</p>
+<p id="out1">0</p>
+<p>LCM:</p>
+<p id="out2">1</p>
+<script src="/assets/widgets.js"></script>
+
+<script>
+	function findGCD() {
+		var input = document.getElementById("next-prime-in").value.split(/\D+/g), last = 0, ans = 0n, product = 1n, x;
+		for (var i = 0; i < input.length; i++) {
+			x = BigInt(input[i]);
+			ans = gcd(ans, x);
+			product *= x / gcd(product, x);
+		}
+		document.getElementById("out1").innerHTML = ans;
+		document.getElementById("out2").innerHTML = product;
+	}
+</script>
+
+
+			</div>
+			
+<footer class="pt-2 text-center bg-brightpink dark:bg-[url(../../assets/images/bgif020.png)]">
+  <a class="dark:text-amber-500" href="https://fairylands.stellar.agew.tech">Source Code</a>
+  <div class="bg-black text-white py-2">
+    <p>💜2020-2021</p>
+  </div>
+</footer>
+		</div>
+	</body>
+</html>

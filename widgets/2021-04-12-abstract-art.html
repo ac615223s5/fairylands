@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+  <title>Abstract Art</title>
+  <base href="" />
+  <link rel="icon" href=/assets/images/favicon.ico type="image/icon">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="//unpkg.com/alpinejs" defer></script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  <link rel="stylesheet" href=/assets/css/main.css type="text/css">
+</head>
+	<body class="font-opensans dark:text-rose-400 dark:bg-[url(../../assets/images/purplerosesblkbg.gif)]">
+		<div class="flex flex-col min-h-screen">
+			<header class="flex justify-between bg-black shadow-[0_-9px_10px_6px_#bf49ff]">
+				<h1 class="inline ml-10 text-5xl text-white hover:text-brightpurple"><a class="font-forte" href=/>Fairylands</a></h1>
+				<a href=".."><img class="h-14" src=/assets/images/favicon.ico alt="logo"></a>
+			</header>
+			<div class="widgets grow mx-auto w-full md:w-2/3 pt-5 p-2 dark:bg-purple-950/80">
+				<a href=/widgets class="text-fuchsia-600 dark:text-amber-500 underline">Back</a>
+<h1>Abstract Art</h1>
+<div x-data="utils" x-init="gen">
+	<p x-text="timeEstimate" class="text-red dark:text-amber-500"></p>
+	<div>
+		Image Size:
+		<input class="smallInput" type="number" x-model="W" x-on:change="clampSize">
+		<input class="smallInput" type="number" x-model="H" x-on:change="clampSize">
+		Line Count/Pattern:
+		<input class="smallInput" type="number" x-model="n" x-on:change="updLineCount">
+		<select x-model="linetype">
+			<option value="random">Random</option>
+			<option value="axis">Axis-aligned</option>
+			<option value="grid">Grid</option>
+		</select>
+		Line Width:
+		<input class="smallInput" type="number" x-model="lineWidth">
+		<select x-model="lineColor">
+			<option value="black">Black</option>
+			<option value="white">White</option>
+			<option value="color">Color</option>
+			<option value="custom">Custom</option>
+			<option value="customSimilar">Similar</option>
+		</select>
+		Region Style:
+		<select x-model="regionColor">
+			<option value="color">Color</option>
+			<option value="grey">Grey</option>
+			<option value="custom">Custom</option>
+			<option value="customSimilar">Similar</option>
+			<option value="gradient">Gradient</option>
+		</select>
+		<div x-show="lineColor==='custom'||lineColor==='customSimilar'||lineColor==='gradient'">
+			Line color: Enter a list of HTML color names or hex codes, separated by spaces:
+			<textarea x-model="lineColorList"></textarea>
+		</div>
+		<div x-show="regionColor==='custom'||regionColor==='customSimilar'||regionColor==='gradient'">
+			Region color: Enter a list of HTML color names or hex codes, separated by spaces:
+			<textarea x-model="regionColorList"></textarea>
+		</div>
+		<button x-on:click="gen">Generate</button>
+	</div>
+</div>
+<canvas id="picture"></canvas>
+Abstract art using intersecting lines.
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/randomcolor/0.6.1/randomColor.min.js"></script>
+<script>
+	document.addEventListener('alpine:init', () => {
+		Alpine.data('utils', () => ({
+			W: Math.floor(window.innerWidth * 0.6),
+			H: Math.floor(window.innerHeight * 0.6),
+			n: 10,
+			linetype: "random",
+			lineColor: "black",
+			lineColorList: "",
+			lineWidth: 0,
+			regionColor: "color",
+			regionColorList: "",
+			clampSize() {
+				this.W = Math.max(0, Math.min(10000, Math.floor(this.W)));
+				this.H = Math.max(0, Math.min(10000, Math.floor(this.H)));
+			},
+			timeEstimate: "",
+			updLineCount() {
+				this.n = Math.min(this.n, 5000);
+				this.timeEstimate = this.n < 100 ? "" : `Estimated time: ${(this.n ** 2 / 4 / 225100).toFixed(3)}s`;
+			},
+			gen() {// parallel lines ok, vertical lines ok, 3 lines intersection not ok
+				const canvas = document.getElementById("picture"), canv = canvas.getContext("2d");
+				const start = Date.now();
+
+				const H = this.H, W = this.W;
+				canv.clearRect(0, 0, W, H);
+				canvas.width = W; canvas.height = H;
+				const regionColorList = this.regionColorList.split(" ");
+				const lineColorList = this.lineColorList.split(" ");
+				const lineWidth = this.lineWidth, lineColor = this.lineColor;
+				canv.lineWidth = lineWidth;
+				const regionColor = this.regionColor;
+				const n = this.n + 4;
+
+				let lines, lis, is, gr, cur, init, cnt = 0, maxX, minX, maxY, minY;
+				lines = [[[0, 0], [0, H]], [[W, 0], [W, H]], [[0, 0], [W, 0]], [[0, H], [W, H]]];
+				lis = []; is = []; gr = [];
+				minX = minY = 1e9; maxX = maxY = -1e9;
+
+
+				for (let i = 4; i < n; i++) {
+					if (this.linetype === "axis") {
+						let temp = Math.random();
+						if (Math.random() < H / (H + W))
+							lines.push([[0, temp * H], [W, temp * H]]);
+						else
+							lines.push([[temp * W, 0], [temp * W, H]]);
+					}
+					else if (this.linetype === "grid") {
+						let temp = (H + W) / (n + 2);
+						if ((i + 1) * temp < H)
+							lines.push([[0, (i + 1) * temp], [W, (i + 1) * temp]]);
+						else
+							lines.push([[(n - i) * temp, 0], [(n - i) * temp, H]]);
+					}
+					else {
+						let x = Math.random() * W, y = Math.random() * H;
+						lines.push([[x, y], [x + Math.random() * 10 - 5, y + Math.random() * 10 - 5]]);
+					}
+				}
+				for (let i = 0; i < n; i++) lis[i] = [];
+				for (let i = 0; i < n; i++) for (let j = 0; j < i; j++) {
+					var ix = intersect(lines[i], lines[j]);
+					if (ix == null) continue;
+					ix[2] = is.length; is.push(ix);
+					lis[i].push(ix); lis[j].push(ix);
+				}
+				m = is.length;
+				console.log(2,Date.now()-start);
+				for (let i = 0; i < m; i++) gr[i] = [];
+				for (let i = 0; i < n; i++) lis[i].sort(function (a, b) {
+					return (a[0] - b[0]) * 1000 + (a[1] - b[1]);
+				});
+				for (let i = 0; i < n; i++) for (let j = 0; j < lis[i].length - 1; j++) {
+					gr[lis[i][j][2]].push(lis[i][j + 1][2]);
+					gr[lis[i][j + 1][2]].push(lis[i][j][2]);
+				}
+				cnt = 0;
+				console.log(3,Date.now()-start);
+				for (let i = 0; i < m; i++) {
+					init = i;
+					for (let j = 0; j < 4; j++) {
+						cur = [];
+						if (dfs(i, null)) {
+							cnt++;
+							canv.fillStyle = getColor(regionColor, regionColorList);
+							canv.beginPath();
+							canv.moveTo(cur[0][0], cur[0][1]);
+							for (let k = 1; k < cur.length; k++) {
+								canv.lineTo(cur[k][0], cur[k][1]);
+							}
+							canv.closePath();
+							canv.fill();
+							if (lineWidth > 0) {
+								canv.strokeStyle = getColor(lineColor, lineColorList);
+								canv.stroke();
+							}
+						}
+					}
+				}
+				console.log("Time taken:", Date.now() - start, cnt);
+
+				function dfs(v, p) {
+					if (v === init && p !== null) return true;
+					if (is[v][0] < 0 || is[v][1] < 0 || is[v][0] > W + 1 || is[v][1] > H + 1) return false;
+					cur.push(is[v]);
+					for (let i = 0; i < gr[v].length; i++) if (gr[v][i] !== null) {
+						if (p === null || cross(is[v], is[p], is[gr[v][i]]) > 1e-6) {
+							let nxt = gr[v][i];
+							gr[v][i] = null;
+							return dfs(nxt, v);
+						}
+					}
+					return false;
+				}
+				function cross(p0, p1, p2) {
+					return (p1[0] - p0[0]) * (p2[1] - p0[1]) - (p1[1] - p0[1]) * (p2[0] - p0[0]);
+				}
+				function det(a, b, c, d) {
+					return a * d - b * c;
+				}
+				function intersect(l1, l2) {
+					let [[x1, y1], [x2, y2]] = l1, [[x3, y3], [x4, y4]] = l2;
+					let a = det(x1, y1, x2, y2), b = det(x3, y3, x4, y4), c = det(x1 - x2, y1 - y2, x3 - x4, y3 - y4);
+					if (c === 0) return null;
+					return [det(a, x1 - x2, b, x3 - x4) / c, det(a, y1 - y2, b, y3 - y4) / c];
+				}
+				function getColor(style, colors) {
+					switch (style) {
+						case "black":
+							return "black";
+						case "white":
+							return "white";
+						case "color":
+							return randomColor();
+						case "grey":
+							return randomColor({ hue: 'monochrome' });
+						case "custom":
+							return colors[cnt % colors.length];
+						case "customSimilar":
+							return randomColor({ hue: colors[cnt % colors.length] });
+						case "gradient":
+							let a = Math.floor(Math.random() * cur.length), b = Math.floor(Math.random() * (cur.length - 1));
+							b = (a + b + 1) % (cur.length);
+							let c = canv.createLinearGradient(cur[a][0], cur[a][1], cur[b][0], cur[b][1]);
+							c.addColorStop(0, colors[(cnt * 2 + 0) % colors.length]);
+							c.addColorStop(1, colors[(cnt * 2 + 1) % colors.length]);
+							return c;
+					}
+					return "black";
+				}
+			}
+		}))
+	});
+
+</script>
+			</div>
+			
+<footer class="pt-2 text-center bg-brightpink dark:bg-[url(../../assets/images/bgif020.png)]">
+  <a class="dark:text-amber-500" href="https://fairylands.stellar.agew.tech">Source Code</a>
+  <div class="bg-black text-white py-2">
+    <p>💜2020-2021</p>
+  </div>
+</footer>
+		</div>
+	</body>
+</html>

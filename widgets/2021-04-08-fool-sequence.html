@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+  <title>The Fool's Sequence</title>
+  <base href="" />
+  <link rel="icon" href=/assets/images/favicon.ico type="image/icon">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="//unpkg.com/alpinejs" defer></script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  <link rel="stylesheet" href=/assets/css/main.css type="text/css">
+</head>
+	<body class="font-opensans dark:text-rose-400 dark:bg-[url(../../assets/images/purplerosesblkbg.gif)]">
+		<div class="flex flex-col min-h-screen">
+			<header class="flex justify-between bg-black shadow-[0_-9px_10px_6px_#bf49ff]">
+				<h1 class="inline ml-10 text-5xl text-white hover:text-brightpurple"><a class="font-forte" href=/>Fairylands</a></h1>
+				<a href=".."><img class="h-14" src=/assets/images/favicon.ico alt="logo"></a>
+			</header>
+			<div class="widgets grow mx-auto w-full md:w-2/3 pt-5 p-2 dark:bg-purple-950/80">
+				<a href=/widgets class="text-fuchsia-600 dark:text-amber-500 underline">Back</a>
+<h1>The Fool's Sequence</h1>
+<p>A fool’s number is a number with digits comprised only of <code class="language-plaintext highlighter-rouge">69</code> and <code class="language-plaintext highlighter-rouge">420</code>. This program can find the nth fool’s number, when sorted in increasing order.</p>
+
+<div>
+	<label for="in">Index:</label>
+	<input type="number" id="in" onchange="foolsequence()" />
+	<p>Result:</p>
+	<input type="text" class="largeInput" id="out1" readonly="" />
+	Number of digits: <input type="text" id="out2" readonly="" />
+</div>
+<script>
+	function foolsequence() {
+		var n = BigInt(document.getElementById("in").value);
+		let dp = [0n,1n, 0n], ans = "";
+		if (n <= 0) ans = "0";
+		else for (let i = 3; ; i++) {
+			dp[i] = dp[i - 2] + dp[i - 3];
+			if (dp[i] >= n) {
+				while (i >= 2) {
+					if (i >= 3 && dp[i - 3] >= n) {
+						ans += 420;
+						i -= 3;
+					}
+					else {
+						ans += 69;
+						if (i >= 3) n -= dp[i - 3];
+						i -= 2;
+					}
+				}
+				break;
+			}
+			n -= dp[i];
+		}
+		document.getElementById("out1").value = ans;
+		document.getElementById("out2").value = ans>0? Math.ceil(Math.log10(ans)):0;
+	}
+</script>
+
+<h2 id="growth">Growth</h2>
+
+<p>A fools number can be formed by appending 69 or 420 to another smaller fool number. 
+As such, if \(d_i\) is the number of fool numbers with \(i&gt;3\) digits, then \(d_i=d_{i-2}+d_{i-3}\) (we can define \(d_3=1,d_2=1,d_1=0\)).</p>
+
+<p>The asymtotic growth of \(d_n\) can be found with function \(x^3=1+x\), which gives \(x≈1.3247, d_n≈1.3247^n\)</p>
+
+<p>Then the number of digits with \(n\) or fewer digits is \(s_n=\sum_{i=1}^n d_i=\theta(1.3247^n)\)</p>
+
+<p>Of course, the \(s_n\)th number has \(n\) digits so it is approximately \(10^n\). The \(n\)th fool number is \(\theta(10^{\log_{1.3247}n })=\theta(n^{8.18})\)</p>
+
+<p><img src="/assets/images/Fool_seq_Figure_1.png" alt="Fools sequence plot" /></p>
+
+<p>It’s a self similar fractal.</p>
+
+<p><img src="/assets/images/Fool_seq_Figure_2.png" alt="Fools sequence plot" /></p>
+
+<p>First few terms:
+69
+420
+6969
+42069
+69420
+420420
+696969
+4206969
+6942069
+6969420
+42042069
+42069420
+69420420
+69696969
+420420420
+420696969
+694206969
+696942069
+696969420
+4204206969
+4206942069
+4206969420
+6942042069
+6942069420
+6969420420
+6969696969
+42042042069
+42042069420
+42069420420
+42069696969
+69420420420
+69420696969
+69694206969
+69696942069
+69696969420
+420420420420
+420420696969
+420694206969
+420696942069
+420696969420
+694204206969
+694206942069
+694206969420
+696942042069
+696942069420
+696969420420
+696969696969</p>
+
+			</div>
+			
+<footer class="pt-2 text-center bg-brightpink dark:bg-[url(../../assets/images/bgif020.png)]">
+  <a class="dark:text-amber-500" href="https://fairylands.stellar.agew.tech">Source Code</a>
+  <div class="bg-black text-white py-2">
+    <p>💜2020-2021</p>
+  </div>
+</footer>
+		</div>
+	</body>
+</html>

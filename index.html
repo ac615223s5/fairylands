@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+  <title>Fairylands</title>
+  <base href="" />
+  <link rel="icon" href=/assets/images/favicon.ico type="image/icon">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="//unpkg.com/alpinejs" defer></script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  <link rel="stylesheet" href=/assets/css/main.css type="text/css">
+</head>
+	<body class="dark:bg-[darkslategrey] flex flex-col min-h-screen">
+		<div class="nav nav-scroll">
+    <ul>
+        
+        <li><a href="/"><div class="navItem" id="cur">Home</div></a></li>
+        
+        <li><a href="/widgets"><div class="navItem" >Widgets</div></a></li>
+        
+        <li><a href="/images"><div class="navItem" >Imagedump</div></a></li>
+        
+        <li><a href=""><div class="navItem" >portal</div></a></li>
+        
+    </ul> 
+</div>
+
+<style>
+  
+.nav-scroll {
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: 500ms;
+}
+.nav {
+  right: 0;
+  position: fixed;
+  z-index: 100;
+  font-size: 2.2vh;
+}
+.nav a {
+  color: inherit;
+  text-decoration: inherit;
+  font-family: inherit;
+}
+.nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.nav li {
+  float: left;
+}
+.nav .navItem {
+  padding: 1rem;
+  text-align: center;
+  font-size: 1.1em;
+  color: lavender;
+}
+.nav .navItem:hover {
+  box-shadow: 0px 0px 9px 2px mintcream;
+  color: white;
+}
+.nav .dropmenu {
+  display: none;
+  z-index: 1;
+  border-top-width: 0px;
+}
+.nav li:hover .dropmenu {
+  display: block;
+}
+
+</style>
+		<div class="grow"><div>
+  <div class="landing-carousel relative bg-[url(/assets/images/34601401_p0.jpg)] bg-cover bg-fixed">
+    <div x-data="xdata" x-init="startAutoSlide()" @mouseover="stopAutoSlide()" @mouseout="startAutoSlide()" class="flex flex-col w-full">
+      <div tabindex="0" role="region" aria-labelledby="carousel-label" class="z-10 flex space-x-6">
+          <h2 id="carousel-label" class="sr-only" hidden>Carousel</h2>
+          <span id="carousel-content-label" class="sr-only" hidden>Carousel</span>
+          <ul x-ref="slider" tabindex="0" role="listbox" aria-labelledby="carousel-content-label" class="flex w-screen overflow-x-hidden">
+              <template x-for="slide in slides">
+                <li class="flex flex-col items-center justify-center p-0 shrink-0" role="option">
+                    <div class="w-screen h-screen flex items-center justify-center bg-cover" x-bind:style="'background-image:url('+slide.img+'); color:'+slide.color">
+                      <div class="font-opensans">
+                        <h2>Online Museum</h2>
+                        <h1 class="font-bold text-8xl">Fairylands</h1>
+                      </div>
+                    </div>
+                </li>
+              </template>
+          </ul>
+      </div>
+      <!-- Prev / Next Buttons -->
+      <div class="absolute flex justify-between w-full h-full px-4">
+          <!-- Prev Button -->
+          <button x-on:click="prev" class="z-20 text-6xl" :aria-disabled="atBeginning" :tabindex="atEnd ? -1 : 0">
+              <span aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-auto h-5 text-gray-300 lg:h-8 hover:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                  </svg>
+              </span>
+              <span class="sr-only">Skip to previous slide page</span>
+          </button>
+          <!-- Next Button -->
+          <button x-on:click="next" class="z-20 text-6xl" :aria-disabled="atEnd" :tabindex="atEnd ? -1 : 0">
+              <span aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-auto h-5 text-gray-300 lg:h-8 hover:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+              </span>
+              <span class="sr-only">Skip to next slide page</span>
+          </button>
+      </div>
+      <!-- Indicators -->
+      <div class="z-20 absolute w-full bottom-12 lg:bottom-24">
+          <div class="flex justify-center space-x-2">
+              <template x-for="(slide, index) in slides" :key="index">
+                  <button @click="goToSlide(index)" :class="{'bg-gray-500': currentSlide === index, 'bg-gray-300': currentSlide !== index}" class="w-3 h-1 rounded-full lg:w-5 hover:bg-gray-400 focus:outline-none focus:bg-gray-400"></button>
+              </template>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="md:w-3/5 m-auto md:py-24 dark:text-[mintcream]">
+    <h1 class="my-7 text-center text-5xl font-black font-arial">Gallery</h1>
+    <div class="grid grid-cols-3 md:gap-5">
+      
+        <div class="">
+          <img src="/assets/images/gallery-thumbnails/fireworks.jpg" class="object-cover aspect-[2/1] w-full shadow-[0_0_5px_0_darkslategrey]">
+          <div class="">
+            <div>
+              <h2 class="inline font-bold text-lg">Fireworks</h2>
+              <a href="https://github.com/ac615223s5/fireworks">
+                <span class="text-sm p-1 dark:border border-white dark:hover:bg-[mintcream] dark:hover:shadow-[0_0_9px_2px_mintcream] dark:hover:text-black">Enter</span>
+              </a>
+            </div>
+            <p class="text-sm  font-poppins">An interactive fireworks show that syncs up with music</p>
+          </div>
+        </div>
+      
+        <div class="">
+          <img src="/assets/images/gallery-thumbnails/fluids.jpg" class="object-cover aspect-[2/1] w-full shadow-[0_0_5px_0_darkslategrey]">
+          <div class="">
+            <div>
+              <h2 class="inline font-bold text-lg">WebGL Fluid Simulation</h2>
+              <a href="https://github.com/ac615223s5/WebGL-Fluid-Simulation">
+                <span class="text-sm p-1 dark:border border-white dark:hover:bg-[mintcream] dark:hover:shadow-[0_0_9px_2px_mintcream] dark:hover:text-black">Enter</span>
+              </a>
+            </div>
+            <p class="text-sm  font-poppins">Play with fluids (audio responsive)</p>
+          </div>
+        </div>
+      
+        <div class="">
+          <img src="/assets/images/gallery-thumbnails/line-art.png" class="object-cover aspect-[2/1] w-full shadow-[0_0_5px_0_darkslategrey]">
+          <div class="">
+            <div>
+              <h2 class="inline font-bold text-lg">Lines</h2>
+              <a href="/widgets/2021-04-13-line-art.html">
+                <span class="text-sm p-1 dark:border border-white dark:hover:bg-[mintcream] dark:hover:shadow-[0_0_9px_2px_mintcream] dark:hover:text-black">Enter</span>
+              </a>
+            </div>
+            <p class="text-sm  font-poppins">Abstract art</p>
+          </div>
+        </div>
+      
+        <div class="">
+          <img src="/assets/images/gallery-thumbnails/halfplane.png" class="object-cover aspect-[2/1] w-full shadow-[0_0_5px_0_darkslategrey]">
+          <div class="">
+            <div>
+              <h2 class="inline font-bold text-lg">Half plane intersection</h2>
+              <a href="https://ac615223s5.github.io/birdhome/2021/04/12/abstract-art.html">
+                <span class="text-sm p-1 dark:border border-white dark:hover:bg-[mintcream] dark:hover:shadow-[0_0_9px_2px_mintcream] dark:hover:text-black">Enter</span>
+              </a>
+            </div>
+            <p class="text-sm  font-poppins">Abstract art</p>
+          </div>
+        </div>
+      
+        <div class="">
+          <img src="/assets/images/gallery-thumbnails/test.png" class="object-cover aspect-[2/1] w-full shadow-[0_0_5px_0_darkslategrey]">
+          <div class="">
+            <div>
+              <h2 class="inline font-bold text-lg">Main Exhibit</h2>
+              <a href="/widgets">
+                <span class="text-sm p-1 dark:border border-white dark:hover:bg-[mintcream] dark:hover:shadow-[0_0_9px_2px_mintcream] dark:hover:text-black">Enter</span>
+              </a>
+            </div>
+            <p class="text-sm  font-poppins"></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <img src="/assets/images/gallery-thumbnails/sorting.png" class="object-cover aspect-[2/1] w-full shadow-[0_0_5px_0_darkslategrey]">
+          <div class="">
+            <div>
+              <h2 class="inline font-bold text-lg">Sorting</h2>
+              <a href="https://ac615223s5.github.io/sorting-algorithm-visualization/">
+                <span class="text-sm p-1 dark:border border-white dark:hover:bg-[mintcream] dark:hover:shadow-[0_0_9px_2px_mintcream] dark:hover:text-black">Enter</span>
+              </a>
+            </div>
+            <p class="text-sm  font-poppins">Sorting algorithm visualization</p>
+          </div>
+        </div>
+      
+        <div class="">
+          <img src="/assets/images/gallery-thumbnails/maze.png" class="object-cover aspect-[2/1] w-full shadow-[0_0_5px_0_darkslategrey]">
+          <div class="">
+            <div>
+              <h2 class="inline font-bold text-lg">Maze Simulator</h2>
+              <a href="https://ac615223s5.github.io/maze-simulator/">
+                <span class="text-sm p-1 dark:border border-white dark:hover:bg-[mintcream] dark:hover:shadow-[0_0_9px_2px_mintcream] dark:hover:text-black">Enter</span>
+              </a>
+            </div>
+            <p class="text-sm  font-poppins">Graph traversal demonstration with mazes</p>
+          </div>
+        </div>
+      
+        <div class="">
+          <img src="/assets/images/gallery-thumbnails/speedforces.png" class="object-cover aspect-[2/1] w-full shadow-[0_0_5px_0_darkslategrey]">
+          <div class="">
+            <div>
+              <h2 class="inline font-bold text-lg">Speedforces</h2>
+              <a href="https://ac615223s5.github.io/speedforces">
+                <span class="text-sm p-1 dark:border border-white dark:hover:bg-[mintcream] dark:hover:shadow-[0_0_9px_2px_mintcream] dark:hover:text-black">Enter</span>
+              </a>
+            </div>
+            <p class="text-sm  font-poppins">Typing game</p>
+          </div>
+        </div>
+      
+        <div class="">
+          <img src="/assets/images/d2q6q8t-335c3992-9f28-410c-a9c3-ffad5c6faacf.jpg" class="object-cover aspect-[2/1] w-full shadow-[0_0_5px_0_darkslategrey]">
+          <div class="">
+            <div>
+              <h2 class="inline font-bold text-lg">Solar System</h2>
+              <a href="https://ac615223s5.github.io/SolarSystem/">
+                <span class="text-sm p-1 dark:border border-white dark:hover:bg-[mintcream] dark:hover:shadow-[0_0_9px_2px_mintcream] dark:hover:text-black">Enter</span>
+              </a>
+            </div>
+            <p class="text-sm  font-poppins">My first website</p>
+          </div>
+        </div>
+      
+    </div>
+  </div>
+</div> 
+<script>
+  const navbar = document.querySelector('.nav');
+    navbar.classList.remove('nav-scroll');
+  window.onscroll = () => {
+    if (window.scrollY > 500) {
+      navbar.classList.add('nav-scroll');
+    } else {
+      navbar.classList.remove('nav-scroll');
+    }
+  };
+  xdata=()=>{return {
+      slides:[
+      {scroll:false,color:"white",img:""},
+        {scroll:false,color:"black",img:"/assets/images/d2q6q8t-335c3992-9f28-410c-a9c3-ffad5c6faacf.jpg"},
+        {scroll:false,color:"white",img:"/assets/images/gallery-thumbnails/fireworks.jpg"},
+        {scroll:false,color:"black",img:"/assets/images/gallery-thumbnails/fluids.jpg"},
+        {scroll:true,color:"black",img:"/assets/images/gallery-thumbnails/line-art.png"},
+        {scroll:true,color:"black",img:"/assets/images/imgComing.jpg"},
+      ],
+      currentSlide: 0,
+      atBeginning: false,
+      atEnd: false,
+      autoSlideInterval: null,
+      startAutoSlide() {
+        this.goToSlide(this.currentSlide);
+        this.autoSlideInterval = setInterval(() => {
+            this.next();
+        }, 4000);
+      },
+      stopAutoSlide() {
+          clearInterval(this.autoSlideInterval);
+      },
+      prev(){
+        this.goToSlide((this.currentSlide+this.slides.length-1)%this.slides.length);
+      },
+      next(){
+        this.goToSlide((this.currentSlide+1)%this.slides.length);
+      },
+      goToSlide(index) {
+          let slider = this.$refs.slider;
+          let offset = slider.lastElementChild.getBoundingClientRect().width;
+          slider.scrollTo({ left: offset * index, behavior: 'smooth' });
+          this.currentSlide=index;
+          if(this.slides[index].scroll){
+            navbar.classList.add('nav-scroll');
+          }
+          else if(window.scrollY<500){
+            navbar.classList.remove('nav-scroll');
+          }
+      },
+  }};
+</script></div>
+		
+		<div class="text-[mintcream]">
+			
+<footer class="pt-2 text-center bg-brightpink dark:bg-[url(../../assets/images/bgif020.png)]">
+  <a class="dark:text-amber-500" href="https://fairylands.stellar.agew.tech">Source Code</a>
+  <div class="bg-black text-white py-2">
+    <p>💜2020-2021</p>
+  </div>
+</footer>
+		</div>
+	</body>
+</html>

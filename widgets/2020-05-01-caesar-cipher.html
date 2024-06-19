@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+  <title>Caesar Cipher</title>
+  <base href="" />
+  <link rel="icon" href=/assets/images/favicon.ico type="image/icon">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="//unpkg.com/alpinejs" defer></script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  <link rel="stylesheet" href=/assets/css/main.css type="text/css">
+</head>
+	<body class="font-opensans dark:text-rose-400 dark:bg-[url(../../assets/images/purplerosesblkbg.gif)]">
+		<div class="flex flex-col min-h-screen">
+			<header class="flex justify-between bg-black shadow-[0_-9px_10px_6px_#bf49ff]">
+				<h1 class="inline ml-10 text-5xl text-white hover:text-brightpurple"><a class="font-forte" href=/>Fairylands</a></h1>
+				<a href=".."><img class="h-14" src=/assets/images/favicon.ico alt="logo"></a>
+			</header>
+			<div class="widgets grow mx-auto w-full md:w-2/3 pt-5 p-2 dark:bg-purple-950/80">
+				<a href=/widgets class="text-fuchsia-600 dark:text-amber-500 underline">Back</a>
+<h1>Caesar Cipher</h1>
+<p>The caesar cipher encrypts a string by shifting all its characters by some amount. For example, a shift of 1 (or A) would replace A with B, B with C, … and Z with A. Because this cipher is so simple it is easily decoded and not recommended for security purposes (unless the key is as long as the text).</p>
+
+<div x-data="{inputText:'',key:'a'}">
+	<label>Text:</label>
+	<input type="text" x-model="inputText" />
+	<label>Key:</label>
+	<input type="text" x-model="key" />
+	<p>Encrypted text:</p>
+	<p x-text="caesarCipher(inputText,key,1)"></p>
+<div x-data="{inputText:''}">
+
+<script>
+function caesarCipher(s,key,type){
+	let cipher="";
+	for(var i=0;i<s.length;i++){
+		var c=s.charCodeAt(i);
+		var shift=key.charCodeAt(i%key.length);
+		if(shift>=97) shift-=97;
+		else if(shift>=65) shift-=65;
+		else if(shift>=48) shift-=48;
+		if(65<=c&&c<=90) c=((c-65+shift)%26+26)%26+65;
+		else if(97<=c&&c<=122) c=((c-97+shift)%26+26)%26+97;
+		else if(48<=c&&c<=57) c=((c-48+shift)%10+10)%10+48;
+		cipher+=String.fromCharCode(c);
+	}
+	return cipher;
+}
+</script>
+</div></div>
+
+			</div>
+			
+<footer class="pt-2 text-center bg-brightpink dark:bg-[url(../../assets/images/bgif020.png)]">
+  <a class="dark:text-amber-500" href="https://fairylands.stellar.agew.tech">Source Code</a>
+  <div class="bg-black text-white py-2">
+    <p>💜2020-2021</p>
+  </div>
+</footer>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+  <title>Factorize</title>
+  <base href="" />
+  <link rel="icon" href=/assets/images/favicon.ico type="image/icon">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="//unpkg.com/alpinejs" defer></script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  <link rel="stylesheet" href=/assets/css/main.css type="text/css">
+</head>
+	<body class="font-opensans dark:text-rose-400 dark:bg-[url(../../assets/images/purplerosesblkbg.gif)]">
+		<div class="flex flex-col min-h-screen">
+			<header class="flex justify-between bg-black shadow-[0_-9px_10px_6px_#bf49ff]">
+				<h1 class="inline ml-10 text-5xl text-white hover:text-brightpurple"><a class="font-forte" href=/>Fairylands</a></h1>
+				<a href=".."><img class="h-14" src=/assets/images/favicon.ico alt="logo"></a>
+			</header>
+			<div class="widgets grow mx-auto w-full md:w-2/3 pt-5 p-2 dark:bg-purple-950/80">
+				<a href=/widgets class="text-fuchsia-600 dark:text-amber-500 underline">Back</a>
+<h1>Factorize</h1>
+<p>Finds factors and prime factors of numbers (must be a positive integer).</p>
+<label for="factorize-in">Input:</label>
+<input type="number" id="factorize-in" onchange="factorize()">
+<p id="time"></p><br>
+<p>Number of prime factors:</p>
+<p id="factorize-out1"></p>
+<p>Prime factorization:</p>
+<p id="factorize-out2"></p>
+<p>Number of distinct prime factors:</p>
+<p id="factorize-out3"></p>
+<p>Prime factorization (exponential):</p>
+<p id="factorize-out4"></p>
+<p>Number of factors:</p>
+<p id="factorize-out5"></p>
+<p>All factors:</p>
+<p id="factorize-out6"></p>
+<h2>Technical Comment</h2>
+<p>This program finds factors using Pollard's rho algorithm.
+	It has a time complexity of O(n<sup>(1/4)</sup>), which is faster than the standard method of trial division.
+	In practice, this program can factor all numbers up to 10<sup>24</sup> in a second.</p>
+
+<script src=/assets/widgets.js></script>
+			</div>
+			
+<footer class="pt-2 text-center bg-brightpink dark:bg-[url(../../assets/images/bgif020.png)]">
+  <a class="dark:text-amber-500" href="https://fairylands.stellar.agew.tech">Source Code</a>
+  <div class="bg-black text-white py-2">
+    <p>💜2020-2021</p>
+  </div>
+</footer>
+		</div>
+	</body>
+</html>
